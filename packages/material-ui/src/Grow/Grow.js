@@ -9,6 +9,11 @@ function getScale(value) {
   return `scale(${value}, ${value ** 2})`;
 }
 
+const isSafari154 = typeof navigator !== 'undefined' &&
+  /^((?!chrome|android).)*safari/i.test(navigator.userAgent) &&
+  /version\/15\.[4-9]/i.test(navigator.userAgent);
+console.log('isSafari154: ', isSafari154);
+
 const styles = {
   entering: {
     opacity: 1,
@@ -92,7 +97,7 @@ const Grow = React.forwardRef(function Grow(props, ref) {
         delay,
       }),
       theme.transitions.create('transform', {
-        duration: duration * 0.666,
+        duration: isSafari154 ? duration : duration * 0.666,
         delay,
       }),
     ].join(',');
@@ -128,8 +133,8 @@ const Grow = React.forwardRef(function Grow(props, ref) {
         delay,
       }),
       theme.transitions.create('transform', {
-        duration: duration * 0.666,
-        delay: delay || duration * 0.333,
+        duration: isSafari154 ? duration : duration * 0.666,
+        delay: isSafari154 ? delay : delay || duration * 0.333,
       }),
     ].join(',');
 
